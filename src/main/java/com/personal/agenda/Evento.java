@@ -11,7 +11,6 @@ public class Evento {
     }
 
     public void setId(String id) {
-
         this.id = id;
     }
 
@@ -34,7 +33,7 @@ public class Evento {
     @Override
     public String toString() {
         return "Evento{" +
-                " Id ='" + id + '\'' +
+                 " Id ='" + id  +
                 ", Fecha =" + fecha +
                 ", Asunto =" + asunto +
                 '}';

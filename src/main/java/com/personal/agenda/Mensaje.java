@@ -3,6 +3,7 @@ package com.personal.agenda;
 public class Mensaje {
     private String tipoMensaje;
     private Evento evento;
+    private String resultado;
 
     public String getResultado() {
         return resultado;
@@ -11,8 +12,6 @@ public class Mensaje {
     public void setResultado(String resultado) {
         this.resultado = resultado;
     }
-
-    private String resultado;
 
     public String getTipoMensaje() {
         return tipoMensaje;
@@ -35,8 +34,10 @@ public class Mensaje {
         return "Mensaje{" +
                 "tipoMensaje='" + tipoMensaje + '\'' +
                 ", evento=" + evento.toString() +
+                ", resultado='" + resultado + '\'' +
                 '}';
     }
+
 //    {
 //        "operation": "SELECT",
 //            "data": {
