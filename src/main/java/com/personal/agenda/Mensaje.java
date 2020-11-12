@@ -1,8 +1,11 @@
 package com.personal.agenda;
 
+import java.util.List;
+
 public class Mensaje {
     private String tipoMensaje;
     private Evento evento;
+    private List<Evento> eventos;
     private String resultado;
 
     public String getResultado() {
@@ -29,11 +32,19 @@ public class Mensaje {
         this.evento = evento;
     }
 
+    public List<Evento> getEventos() {
+        return eventos;
+    }
+
+    public void setEventos(List<Evento> eventos) {
+        this.eventos = eventos;
+    }
+
     @Override
     public String toString() {
         return "Mensaje{" +
                 "tipoMensaje='" + tipoMensaje + '\'' +
-                ", evento=" + evento.toString() +
+                ", evento=" + evento +
                 ", resultado='" + resultado + '\'' +
                 '}';
     }

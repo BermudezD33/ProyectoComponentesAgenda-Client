@@ -11,8 +11,9 @@ public class Application {
 //        Evento escribir = new Evento();
 //        escribir.setFecha(new Long(20));
 //        escribir.setAsunto("Tabla de eventos");
+        SpringApplication.run(com.personal.agenda.Application.class, args);
 
-        ConfigurableApplicationContext context = SpringApplication.run(com.personal.agenda.Application.class, args);
+       // ConfigurableApplicationContext context = SpringApplication.run(com.personal.agenda.Application.class, args);
 //        DynamoDBMapper dynamoDBMapper = context.getBean(DynamoDBMapper.class);
 //        dynamoDBMapper.save(escribir);
         //  Evento evento = dynamoDBMapper.load(Evento.class, "fa1508c4-3a7e-4054-8905-484226f92f0e");

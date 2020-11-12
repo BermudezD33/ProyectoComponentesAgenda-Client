@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+          integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <title>Crear Evento</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+            crossorigin="anonymous"></script>
+
+
+    <style>
+* {
+  box-sizing: border-box;
+}
+
+/* Create three equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 33.33%;
+  padding: 10px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+
+
+
+
+
+
+
+
+
+    </style>
+    <script th:inline="javascript">
+/*<![CDATA[*/
+var diaSeleccionado = /*[[${dia}]]*/;
+var mesSeleccionado = /*[[${mes}]]*/;
+var anioSeleccionado = /*[[${anio}]]*/
+var horaSeleccionado = /*[[${hora}]]*/
+var minutoSeleccionado = /*[[${minuto}]]*/
+
+function cargarDropdowns() {
+    cargarDropdownDia(diaSeleccionado, mesSeleccionado);
+    cargarDropdownMes(mesSeleccionado);
+    cargarDropdownAnio(anioSeleccionado);
+    cargarDropdownHora(horaSeleccionado);
+    cargarDropdownMinuto(minutoSeleccionado);
+}
+
+function cargarDropdownHora(hora = 0) {
+    dropdownHora = $('#dropdownHora');
+    var maxHoras = 24;
+    for (i = 1; i <= maxHoras; i++) {
+        dropdownHora.append(new Option(i, i, (i == hora), (i == hora)));
+    }
+}
+
+function cargarDropdownMinuto(minuto = 1) {
+    dropdownMinuto = $('#dropdownMinuto');
+    var maxMinutos = 60;
+    for (i = 1; i <= maxMinutos; i++) {
+        dropdownMinuto.append(new Option(i, i, (i == minuto), (i == minuto)));
+    }
+}
+
+function cargarDropdownDia(dia = 1, mes = 1) {
+    dropdownDia = $('#dropdownDia');
+    var maxDias = 31;
+    if (mes == 2) {
+        maxDias = 28;
+    } else if (mes == 4 || mes == 6 || mes == 9 || mes == 11) {
+        maxDias = 30;
+    }
+
+    for (i = 1; i <= maxDias; i++) {
+        dropdownDia.append(new Option(i, i, (i == dia), (i == dia)));
+    }
+}
+
+function cargarDropdownMes(mes = 1) {
+    dropdownMes = $('#dropdownMes');
+    var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Setiembre',
+                    'Octubre', 'Noviembre', 'Diciembre'];
+    for (i = 0; i < meses.length; i++) {
+        dropdownMes.append(new Option(meses[i], i+1, (i+1 == mes), (i+1 == mes)));
+    }
+}
+
+function cargarDropdownAnio(anio = 2018) {
+    dropdownAnio = $('#dropdownAnio');
+    var anios = [2018, 2019, 2020, 2021, 2022];
+    for (i = 0; i < anios.length; i++) {
+        dropdownAnio.append(new Option(anios[i], anios[i], (anios[i] == anio), (anios[i] == anio)));
+    }
+}
+
+
+/*]]*/
+
+    </script>
+</head>
+<body onload="cargarDropdowns();">
+<form action="#" th:action="@{/crearEvento}" th:object="${mensajeForm}" method="post">
+    <span>Día: </span><select th:field="*{dropdownDia}" id="dropdownDia"  class="dropdown-content" name="dropdownDia"></select>
+    <span>Mes: </span><select th:field="*{dropdownMes}" id="dropdownMes" class="dropdown-content" name="dropdownMes"></select>
+    <span>Año: </span><select th:field="*{dropdownAnio}" id="dropdownAnio" class="dropdown-content" name="dropdownAnio"></select>
+    <span>Hora: </span><select th:field="*{dropdownHora}" id="dropdownHora" class="dropdown-content" name="dropdownHora"></select>
+    <span>Minuto: </span><select th:field="*{dropdownMinuto}" id="dropdownMinuto" class="dropdown-content" name="dropdownMinuto"></select>
+    <hr>
+    <label for="asunto">Asunto: </label>
+    <textarea id="asunto" name="asunto" rows="4" cols="50"></textarea>
+    <hr>
+    <button id="btnGuardar" type="submit">Guardar evento</button>
+</form>
+<p><a href="/">Regresar </a></p>
+
+</body>
+</html>

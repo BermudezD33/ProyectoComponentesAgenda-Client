@@ -1,6 +1,5 @@
 package com.personal.agenda;
 
-import com.amazonaws.services.sqs.model.Message;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,15 +10,17 @@ import org.springframework.cloud.aws.messaging.listener.annotation.SqsListener;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
 public class SqsService {
+    public static final Logger LOGGER = LoggerFactory.getLogger(SqsService.class);
+
     private static final String QUEUE_REQUEST = "ColaRequest.fifo";
     private static final String QUEUE_RESPONSE = "ColaResponse.fifo";
-
-    public static final Logger LOGGER = LoggerFactory.getLogger(SqsService.class);
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -27,61 +28,36 @@ public class SqsService {
     @Autowired
     private QueueMessagingTemplate queueMessagingTemplate;
 
-    public void sendMessageToSqs(final Message message) {
+    public void sendMessageToSqs(Mensaje mensaje) throws Exception {
         System.out.println("Sending the message to the Amazon sqs.");
-        queueMessagingTemplate.convertAndSend(QUEUE_REQUEST, message);
+        String mensajeJson = objectMapper.writeValueAsString(mensaje);
+        Map<String, Object> headers = new HashMap<>();
+        headers.put("message-group-id", "G1");
+        headers.put("message-deduplication-id", String.valueOf(new Date().getTime()));
+        //boolean estado;
+        queueMessagingTemplate.convertAndSend(QUEUE_REQUEST, mensaje, headers);
         System.out.println("Message sent successfully to the Amazon sqs.");
     }
 
-    @SqsListener(value = QUEUE_RESPONSE, deletionPolicy = SqsMessageDeletionPolicy.ON_SUCCESS)
-    public void getMessageFromSqs(String message, @Header("MessageId") String messageId) throws Exception {
-        System.out.println("Mensaje recibido: " + message);
+    public Mensaje receiveMessageFromSqs() throws Exception {
+        String mensajeJson;
+        int intentos = 0;
+        do {
+            Thread.sleep(500);
+            mensajeJson = queueMessagingTemplate.receiveAndConvert(QUEUE_RESPONSE, String.class);
+            intentos++;
+        } while (mensajeJson == null && intentos <= 10);
 
-        Mensaje mensaje = objectMapper.readValue(message, Mensaje.class);
-        String retornable;
-        System.out.println(mensaje.toString());
-        //try {
-        switch (mensaje.getTipoMensaje()) {
-            case "Create":
-                if (mensaje.getResultado().equals("Success")) {
-                    System.out.println("Estado Create: " + mensaje.getResultado());
-                }
-                break;
-            case "Retrieve":
-                if (mensaje.getResultado().equals("Success")) {
-//
-//                        Evento event = dynamoDBMapper.load(Evento.class, mensaje.getEvento().getId());
-                    System.out.println("Estado Retrieve: " + mensaje.getResultado());
-                }
-                break;
-            case "Update":
-                if (mensaje.getResultado().equals("Success")) {
-//                        dynamoDBMapper.save(mensaje.getEvento());
-                    System.out.println("Estado Update: " + mensaje.getResultado());
-                }
-                break;
-            case "Delete":
-                if (mensaje.getResultado().equals("Success")) {
-//                        dynamoDBMapper.delete(mensaje.getEvento());
-                    System.out.println("Estado Delete: " + mensaje.getResultado());
-                }
-                break;
-            default:
-                throw new Exception("No se pude realizar ninguna accion con ese mensaje");
+        Mensaje mensaje;
+        if (mensajeJson == null) {
+            mensaje = new Mensaje();
+            mensaje.setEventos(new ArrayList<>());
+        } else {
+            mensaje = objectMapper.readValue(mensajeJson, Mensaje.class);
         }
-        //mensaje.setResultado("Success");
-
-
-        // } catch (Exception exception) {
-        // mensaje.setResultado("Fail");
-        // }
-        retornable = objectMapper.writeValueAsString(mensaje);
-        System.out.println(retornable);
-
-       // Map<String, Object> headers = new HashMap<>();
-        //headers.put("message-group-id", "G2");
-       // queueMessagingTemplate.convertAndSend(QUEUE_RESPONSE, retornable, headers);
+        return mensaje;
     }
+
 }
 
 

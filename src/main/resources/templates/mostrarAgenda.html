@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+          integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <title>Agenda</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+            crossorigin="anonymous"></script>
+
+
+    <style>
+* {
+  box-sizing: border-box;
+}
+
+/* Create three equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 33.33%;
+  padding: 10px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+
+    </style>
+    <script th:inline="javascript">
+/*<![CDATA[*/
+var diaSeleccionado = /*[[${dia}]]*/;
+var mesSeleccionado = /*[[${mes}]]*/;
+var anioSeleccionado = /*[[${anio}]]*/
+
+function cargarDropdowns() {
+    cargarDropdownDia(diaSeleccionado, mesSeleccionado);
+    cargarDropdownMes(mesSeleccionado);
+    cargarDropdownAnio(anioSeleccionado);
+}
+
+function cargarDropdownDia(dia = 1, mes = 1) {
+    dropdownDia = $('#dropdownDia');
+    var maxDias = 31;
+    if (mes == 2) {
+        maxDias = 28;
+    } else if (mes == 4 || mes == 6 || mes == 9 || mes == 11) {
+        maxDias = 30;
+    }
+
+    for (i = 1; i <= maxDias; i++) {
+        dropdownDia.append(new Option(i, i, (i == dia), (i == dia)));
+    }
+}
+
+function cargarDropdownMes(mes = 1) {
+    dropdownMes = $('#dropdownMes');
+    var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Setiembre',
+                    'Octubre', 'Noviembre', 'Diciembre'];
+    for (i = 0; i < meses.length; i++) {
+        dropdownMes.append(new Option(meses[i], i+1, (i+1 == mes), (i+1 == mes)));
+    }
+}
+
+function cargarDropdownAnio(anio = 2018) {
+    dropdownAnio = $('#dropdownAnio');
+    var anios = [2018, 2019, 2020, 2021, 2022];
+    for (i = 0; i < anios.length; i++) {
+        dropdownAnio.append(new Option(anios[i], anios[i], (anios[i] == anio), (anios[i] == anio)));
+    }
+}
+
+function consultarFecha() {
+    var dia = $('#dropdownDia  :selected').val();
+    var mes = $('#dropdownMes  :selected').val();
+    var anio = $('#dropdownAnio  :selected').val();
+
+    window.location.href = 'mostrarAgenda?anio=' + anio + '&mes=' + mes + '&dia=' + dia;
+}
+
+/*]]*/
+
+
+
+    </script>
+</head>
+<body onload="cargarDropdowns();">
+<span>Día: </span><select id="dropdownDia" class="dropdown-content" name="dropdownDia"></select>
+<span>Mes: </span><select id="dropdownMes" class="dropdown-content" name="dropdownMes"></select>
+<span>Año: </span><select id="dropdownAnio" class="dropdown-content" name="dropdownAnio"></select>
+<button id="btnFecha" type="button" onclick="consultarFecha();">Ver fecha</button>
+
+<table class="table">
+    <thead class="thead-light">
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Fecha</th>
+        <th scope="col">Asunto</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="evento: ${eventos}">
+        <th scope="row"><p th:text="${eventoStat.count}"></p></th>
+        <td th:text="${evento.fecha}"></td>
+        <td th:text="${evento.asunto}"></td>
+    </tr>
+    </tbody>
+</table>
+
+
+<p><a href="/">Regresar </a></p>
+</body>
+</html>
