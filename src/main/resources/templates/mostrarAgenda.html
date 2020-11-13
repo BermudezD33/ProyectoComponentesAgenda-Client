@@ -112,7 +112,7 @@ function consultarFecha() {
     <tbody>
     <tr th:each="evento: ${eventos}">
         <th scope="row"><p th:text="${eventoStat.count}"></p></th>
-        <td th:text="${evento.fecha}"></td>
+        <td th:text = ${#dates.format(evento.fecha,'dd/MMM/yyyy-HH:mm')}></td>
         <td th:text="${evento.asunto}"></td>
     </tr>
     </tbody>

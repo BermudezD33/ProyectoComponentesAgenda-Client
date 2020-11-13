@@ -6,6 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Controller
 public class MostrarAgendaController {
 
@@ -24,15 +27,23 @@ public class MostrarAgendaController {
 
         System.out.println(model);
 
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        String fechaCompleta = dia + "-" +
+                mes + "-" +
+                anio + " " +
+                 "00:00:00" ;
+        Date fecha = formatter.parse(fechaCompleta);
+
         Mensaje mensaje = new Mensaje();
         mensaje.setTipoMensaje("RetrieveByDay");
-        mensaje.setEvento(new Evento());
-
+        Evento evento = new Evento();
+        evento.setFecha(fecha.getTime());
+        mensaje.setEvento(evento);
         sqsService.sendMessageToSqs(mensaje);
 
         Mensaje mensajeRespuesta = sqsService.receiveMessageFromSqs();
 
-        model.addAttribute("eventos", mensajeRespuesta.getEventos());
+        model.addAttribute("eventos", mensajeRespuesta.getEventos() );
 
         return "mostrarAgenda";
     }
