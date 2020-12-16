@@ -45,6 +45,9 @@ public class CrearEventoController {
 
         sqsService.sendMessageToSqs(mensaje);
 
+        Mensaje mensajeRespuesta = sqsService.receiveMessageFromSqs();
+
+
         return "redirect:/mostrarAgenda";
 
     }

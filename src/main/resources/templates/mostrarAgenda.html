@@ -123,7 +123,8 @@ function consultarFecha() {
         <td th:text="${evento.asunto}"></td>
         <td type="button" class="btn btn-success"
             th:attr="onclick=|window.location.href=${''''}/crearEvento/${evento.id}${''''}|">Actualizar</td>
-        <td type="button" class="btn btn-danger" onclick="window.location.href='/page2'">Eliminar</td>
+        <td type="button" class="btn btn-danger"
+            th:attr="onclick=|window.location.href=${''''}/deleteEvento/${evento.id}${''''}|">Eliminar</td>
     </tr>
     </tbody>
 </table>

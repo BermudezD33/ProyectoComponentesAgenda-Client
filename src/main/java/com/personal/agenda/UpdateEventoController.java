@@ -52,7 +52,8 @@ public class UpdateEventoController {
 
 
     @PostMapping("/crearEvento/{id}")
-    public String crearEvento(@PathVariable(value = "id") String id, @ModelAttribute MensajeForm mensajeForm, Model model) throws Exception {
+    public String crearEvento(@PathVariable(value = "id") String id, @ModelAttribute MensajeForm mensajeForm,
+                              Model model) throws Exception {
         String asunto = mensajeForm.getAsunto();
         model.addAttribute("mensajeForm", mensajeForm);
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
@@ -72,6 +73,8 @@ public class UpdateEventoController {
         mensaje.setEvento(evento);
 
         sqsService.sendMessageToSqs(mensaje);
+
+        Mensaje mensajeRespuesta = sqsService.receiveMessageFromSqs();
 
         return "redirect:/mostrarAgenda";
     }
