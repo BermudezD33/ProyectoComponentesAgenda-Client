@@ -37,6 +37,7 @@
 
 
 
+
     </style>
     <script th:inline="javascript">
 /*<![CDATA[*/
@@ -89,7 +90,12 @@ function consultarFecha() {
     window.location.href = 'mostrarAgenda?anio=' + anio + '&mes=' + mes + '&dia=' + dia;
 }
 
+
+
+
+
 /*]]*/
+
 
 
 
@@ -107,13 +113,17 @@ function consultarFecha() {
         <th scope="col">#</th>
         <th scope="col">Fecha</th>
         <th scope="col">Asunto</th>
+        <th scope="col">Editar</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="evento: ${eventos}">
         <th scope="row"><p th:text="${eventoStat.count}"></p></th>
-        <td th:text = ${#dates.format(evento.fecha,'dd/MMM/yyyy-HH:mm')}></td>
+        <td th:text=${#dates.format(evento.fecha,'dd/MMM/yyyy-HH:mm')}></td>
         <td th:text="${evento.asunto}"></td>
+        <td type="button" class="btn btn-success"
+            th:attr="onclick=|window.location.href=${''''}/crearEvento/${evento.id}${''''}|">Actualizar</td>
+        <td type="button" class="btn btn-danger" onclick="window.location.href='/page2'">Eliminar</td>
     </tr>
     </tbody>
 </table>

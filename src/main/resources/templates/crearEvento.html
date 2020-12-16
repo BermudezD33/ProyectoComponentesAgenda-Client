@@ -45,6 +45,7 @@
 
 
 
+
     </style>
     <script th:inline="javascript">
 /*<![CDATA[*/
@@ -53,6 +54,7 @@ var mesSeleccionado = /*[[${mes}]]*/;
 var anioSeleccionado = /*[[${anio}]]*/
 var horaSeleccionado = /*[[${hora}]]*/
 var minutoSeleccionado = /*[[${minuto}]]*/
+var asuntoSeleccionado = /*[[${asunto}]]*/
 
 function cargarDropdowns() {
     cargarDropdownDia(diaSeleccionado, mesSeleccionado);
@@ -60,12 +62,20 @@ function cargarDropdowns() {
     cargarDropdownAnio(anioSeleccionado);
     cargarDropdownHora(horaSeleccionado);
     cargarDropdownMinuto(minutoSeleccionado);
+    cargarAsunto(asuntoSeleccionado);
 }
+
+
+function cargarAsunto(asunto = "Hoola") {
+    asunto = $('#asunto');
+
+}
+
 
 function cargarDropdownHora(hora = 0) {
     dropdownHora = $('#dropdownHora');
-    var maxHoras = 24;
-    for (i = 1; i <= maxHoras; i++) {
+    var maxHoras = 23;
+    for (i = 0; i <= maxHoras; i++) {
         dropdownHora.append(new Option(i, i, (i == hora), (i == hora)));
     }
 }
@@ -112,18 +122,24 @@ function cargarDropdownAnio(anio = 2018) {
 
 /*]]*/
 
+
     </script>
 </head>
 <body onload="cargarDropdowns();">
-<form action="#" th:action="@{/crearEvento}" th:object="${mensajeForm}" method="post">
-    <span>Día: </span><select th:field="*{dropdownDia}" id="dropdownDia"  class="dropdown-content" name="dropdownDia"></select>
-    <span>Mes: </span><select th:field="*{dropdownMes}" id="dropdownMes" class="dropdown-content" name="dropdownMes"></select>
-    <span>Año: </span><select th:field="*{dropdownAnio}" id="dropdownAnio" class="dropdown-content" name="dropdownAnio"></select>
-    <span>Hora: </span><select th:field="*{dropdownHora}" id="dropdownHora" class="dropdown-content" name="dropdownHora"></select>
-    <span>Minuto: </span><select th:field="*{dropdownMinuto}" id="dropdownMinuto" class="dropdown-content" name="dropdownMinuto"></select>
+<form action="#" th:action="${actionUrl}" th:object="${mensajeForm}" method="post">
+    <span>Día: </span><select th:field="*{dropdownDia}" id="dropdownDia" class="dropdown-content"
+                              name="dropdownDia"></select>
+    <span>Mes: </span><select th:field="*{dropdownMes}" id="dropdownMes" class="dropdown-content"
+                              name="dropdownMes"></select>
+    <span>Año: </span><select th:field="*{dropdownAnio}" id="dropdownAnio" class="dropdown-content"
+                              name="dropdownAnio"></select>
+    <span>Hora: </span><select th:field="*{dropdownHora}" id="dropdownHora" class="dropdown-content"
+                               name="dropdownHora"></select>
+    <span>Minuto: </span><select th:field="*{dropdownMinuto}" id="dropdownMinuto" class="dropdown-content"
+                                 name="dropdownMinuto"></select>
     <hr>
     <label for="asunto">Asunto: </label>
-    <textarea id="asunto" name="asunto" rows="4" cols="50"></textarea>
+    <textarea th:text="${asunto}" id="asunto" name="asunto" rows="4" cols="50"></textarea>
     <hr>
     <button id="btnGuardar" type="submit">Guardar evento</button>
 </form>

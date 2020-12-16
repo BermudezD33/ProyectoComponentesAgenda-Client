@@ -23,8 +23,10 @@ os: linux
 #   "files" section altogether. A blank or incomplete "files" section
 #   may cause associated deployments to fail.
 files:
-  - source: /
+  - source: /ProyectoComponentesAgenda-Client
     destination: /var/web_app/
+  - source: /ProyectoComponentesAgenda-Server
+    destination: /var/agenda_app/
       # For deployments to Amazon Linux, Ubuntu Server, or RHEL instances,
       #   you can specify a "permissions"
       #   section here that describes special permissions to apply to the files

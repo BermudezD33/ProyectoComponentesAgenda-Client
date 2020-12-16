@@ -19,12 +19,13 @@ public class CrearEventoController {
     @GetMapping("/crearEvento")
     public String mostrar(Model model) {
         model.addAttribute("mensajeForm", new MensajeForm());
+        model.addAttribute("actionUrl", "/crearEvento");
         return "crearEvento";
     }
 
 
     @PostMapping("/crearEvento")
-    public void crearEvento(@ModelAttribute MensajeForm mensajeForm, Model model) throws Exception {
+    public String crearEvento(@ModelAttribute MensajeForm mensajeForm, Model model) throws Exception {
         String asunto = mensajeForm.getAsunto();
         model.addAttribute("mensajeForm", mensajeForm);
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
@@ -43,6 +44,9 @@ public class CrearEventoController {
         mensaje.setEvento(evento);
 
         sqsService.sendMessageToSqs(mensaje);
+
+        return "redirect:/mostrarAgenda";
+
     }
 
 }

@@ -44,7 +44,7 @@ public class SqsService {
         int intentos = 0;
         do {
             Thread.sleep(500);
-            mensajeJson = queueMessagingTemplate.receiveAndConvert(QUEUE_RESPONSE, String.class);
+                mensajeJson = queueMessagingTemplate.receiveAndConvert(QUEUE_RESPONSE, String.class);
             intentos++;
         } while (mensajeJson == null && intentos <= 10);
 
