@@ -1,0 +1,24 @@
+{
+    "server" :{
+        "id": 1,
+        "name" : "Galathia",
+        "max_capacity": 500
+    },
+    "players": [
+        {
+            "id": 1,
+            "username": "Jeff",
+            "password": "12345"
+        },
+        {
+            "id": 2,
+            "username": "Pepe",
+            "password": "pepe123"
+        },
+        {
+            "id": 3,
+            "username": "Kitty",
+            "password": "gatita123"
+        }
+    ]
+}

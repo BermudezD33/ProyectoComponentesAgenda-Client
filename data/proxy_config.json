@@ -1,0 +1,10 @@
+{
+    "proxy" :{
+        "id": 1,
+        "port": ":4343",
+        "max_capacity": 500
+    },
+    "redis": {
+        "host": "localhost:6379"
+    }
+}
